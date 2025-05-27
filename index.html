@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>White Sox Record Since May 8, 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2em;
+      background: #f4f4f4;
+      color: #333;
+    }
+    h1 {
+      color: #2e3a59;
+    }
+    .record {
+      font-size: 1.5em;
+      margin-top: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Chicago White Sox Record</h1>
+  <p>Since May 8, 2025</p>
+  <div class="record" id="record">Loading...</div>
+
+  <script>
+    const TEAM_ID = 145; // White Sox
+    const START_DATE = '2025-05-08';
+    const END_DATE = new Date().toISOString().split('T')[0];
+    const url = `https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=${TEAM_ID}&startDate=${START_DATE}&endDate=${END_DATE}&hydrate=linescore`;
+
+    async function getWhiteSoxRecord() {
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        let wins = 0;
+        let losses = 0;
+
+        data.dates.forEach(date => {
+          date.games.forEach(game => {
+            const home = game.teams.home;
+            const away = game.teams.away;
+
+            // Skip games not yet finished
+            if (game.status.abstractGameState !== "Final") return;
+
+            const isWhiteSoxHome = home.team.id === TEAM_ID;
+            const isWhiteSoxAway = away.team.id === TEAM_ID;
+
+            if (isWhiteSoxHome) {
+              if (home.score > away.score) wins++;
+              else losses++;
+            } else if (isWhiteSoxAway) {
+              if (away.score > home.score) wins++;
+              else losses++;
+            }
+          });
+        });
+
+        document.getElementById('record').textContent =
+          `White Sox Record Since Selection of Pope Leo XIV: ${wins} Wins – ${losses} Losses`;
+      } catch (error) {
+        document.getElementById('record').textContent = 'Error fetching data.';
+        console.error('Error fetching White Sox record:', error);
+      }
+    }
+
+    getWhiteSoxRecord();
+  </script>
+</body>
+</html>
