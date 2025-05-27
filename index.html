@@ -5,24 +5,60 @@
   <title>White Sox Record Since May 8, 2025</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 2em;
-      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
       color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
+
+    .container {
+      text-align: center;
+      background-color: #ffffff;
+      padding: 2.5em;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 90%;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 1.5em;
+      border-radius: 8px;
+    }
+
     h1 {
-      color: #2e3a59;
+      color: #1c2c4c;
+      margin-bottom: 0.5em;
     }
+
     .record {
-      font-size: 1.5em;
+      font-size: 1.4em;
       margin-top: 1em;
+      color: #2a6d3b;
+    }
+
+    .subtext {
+      color: #666;
+      font-size: 0.95em;
     }
   </style>
 </head>
 <body>
-  <h1>Chicago White Sox Record</h1>
-  <p>Since May 8, 2025</p>
-  <div class="record" id="record">Loading...</div>
+  <div class="container">
+    <h1>Chicago White Sox Record</h1>
+    <p class="subtext">Since May 8, 2025</p>
+    <h3>White Sox Record Since Selection of Pope Leo XIV</h3>
+    <div class="record" id="record">Loading...</div>
+    <hr>
+    <img src="image.png" alt="White Sox Image">
+  </div>
 
   <script>
     const TEAM_ID = 145; // White Sox
@@ -43,7 +79,6 @@
             const home = game.teams.home;
             const away = game.teams.away;
 
-            // Skip games not yet finished
             if (game.status.abstractGameState !== "Final") return;
 
             const isWhiteSoxHome = home.team.id === TEAM_ID;
@@ -60,10 +95,10 @@
         });
 
         document.getElementById('record').textContent =
-          `White Sox Record Since Selection of Pope Leo XIV: ${wins} Wins – ${losses} Losses`;
+          `${wins} Wins – ${losses} Losses`;
       } catch (error) {
         document.getElementById('record').textContent = 'Error fetching data.';
-        console.error('Error fetching White Sox record:', error);
+        console.error('Error:', error);
       }
     }
 
